@@ -64,8 +64,8 @@ h1 {
   z-index: 1000;
   display: none;
 }
-
 /* Global [End] */
+
 
 
 
@@ -175,10 +175,6 @@ header .user-options {
   user-select: none;
 }
 
-/*  */
-
-
-
 header .links-section .mobile-menu {
   display: none;
 }
@@ -237,10 +233,6 @@ header .links-section .mobile-menu nav ul li a {
   }
 }
 
-
-
-
-/*  */
 header .user-options i {
   font-size: 18px;
   user-select: none;
@@ -299,8 +291,9 @@ header .user-options .img img {
   user-select: none;
   cursor: pointer;
 }
-
 /* Header [End] */
+
+
 
 
 
@@ -401,6 +394,7 @@ header .user-options .img img {
 
 
 
+
 /* Footer [Start] */
 footer {
   background-color: #fff;
@@ -455,5 +449,4 @@ footer p span a {
 footer p span a:hover {
   color: #c8c8c8;
 }
-
 /* Footer [End] */

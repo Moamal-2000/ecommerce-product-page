@@ -1,6 +1,14 @@
 "use strict";
 
-const productContainer = document.querySelector("section.products");
+const productContainer = document.querySelector("section.products"),
+  navMenu = document.querySelector("header .links-section .mobile-menu"),
+  mobileNav = document.querySelector(".links-section .mobile-menu nav"),
+  overlay = document.createElement("div"),
+  closeMobileNav = document.createElement("i");
+
+
+
+
 
 let carts = [];
 let productsLocal = localStorage.getItem("products");
@@ -13,10 +21,18 @@ if (productsLocal !== null) {
   updateList();
 }
 
+
+
+
+
 let hasCheckOutButton = localStorage.getItem("hasCheckOutButton");
 if (hasCheckOutButton === null) {
   hasCheckOutButton = false;
 }
+
+
+
+
 
 function updateList() {
   productContainer.textContent = "";
@@ -36,8 +52,11 @@ function updateList() {
     addCart(cart);
   });
 }
-
 updateList();
+
+
+
+
 
 function addCart(cart) {
   let total = ` $${cart.price * cart.numberOfProducts}.00`;
@@ -86,6 +105,10 @@ function addCart(cart) {
   deleteProductFun(cart.id, deleteProduct);
 }
 
+
+
+
+
 function deleteProductFun(cartId, button) {
   button.addEventListener("click", () => {
     // delete product from list who clicked on delete icon
@@ -95,17 +118,19 @@ function deleteProductFun(cartId, button) {
   });
 }
 
-// Mobile nav
 
-const navMenu = document.querySelector("header .links-section .mobile-menu");
-const mobileNav = document.querySelector(".links-section .mobile-menu nav");
-const overlay = document.createElement("div");
-const closeMobileNav = document.createElement("i");
 
+
+
+// mobile nav
 overlay.className = "overlay";
 document.body.appendChild(overlay);
 closeMobileNav.className = "bi bi-x close-mobile-nav";
 closeMobileNav.style.width = "fit-content";
+
+
+
+
 
 navMenu.addEventListener("click", () => {
   overlay.style.display = "block";
@@ -119,8 +144,12 @@ overlay.addEventListener("click", (e) => {
 });
 
 
+
+
+
+
 window.addEventListener("click", (e) => {
-  // Close mobile overlay
+  // close mobile overlay
   if (e.target.classList.contains('close-mobile-nav')) {
     overlay.style.display = 'none'
     mobileNav.classList.remove('active')

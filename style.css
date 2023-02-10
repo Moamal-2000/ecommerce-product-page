@@ -49,7 +49,6 @@ h1 {
     width: 100%;
   }
 }
-
 /* Global [End] */
 
 
@@ -447,7 +446,6 @@ header .user-options .img img {
   user-select: none;
   cursor: pointer;
 }
-
 /* Header [End] */
 
 
@@ -584,8 +582,11 @@ main .slider .images ul li img:hover {
 main .slider .images ul li.active img {
   opacity: .5;
 }
-
 /* Slider [End] */
+
+
+
+
 
 /* Add to Cart Section [Start] */
 main .request-products {
@@ -797,11 +798,7 @@ main .request-products .add-to-cart-content .add-to-cart i {
   font-size: 16px;
   margin-right: 10px;
 }
-
-main .request-products .add-to-cart-content .add-to-cart span {}
-
 /* Add to Cart Section [End] */
-
 
 
 
@@ -940,8 +937,10 @@ main .request-products .add-to-cart-content .add-to-cart span {}
   -ms-border-radius: inherit;
   -o-border-radius: inherit;
 }
-
 /* Slider overlay [End] */
+
+
+
 
 
 
@@ -1008,5 +1007,4 @@ footer p span a {
 footer p span a:hover {
   color: #c8c8c8;
 }
-
 /* Footer [End] */

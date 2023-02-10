@@ -1,25 +1,27 @@
 "use strict";
 
-const sliderImages = document.querySelectorAll("main .slider .images ul li");
-const sliderShowImg = document.querySelector(".slider .show-img-holder img");
-const cartIcon = document.querySelector(".container header .user-options i");
-const cartsMenu = document.querySelector(".container header .carts-menu");
-const increaseProduct = document.querySelector(".counter button:first-child");
-const decreaseProduct = document.querySelector(".counter button:last-child");
-const numberOfProducts = document.querySelector(".counter .the-number");
-const showNumOfProd = document.querySelector(
-  ".user-options i .number-of-products"
-);
-const addToCart = document.getElementById("add-to-cart-button");
-const titleProduct = document.querySelector("main .request-products h2");
-const priceProduct = document.querySelector(".price-container .price");
-const cartsPlace = document.querySelector(" header .carts-menu .carts");
+const sliderImages = document.querySelectorAll("main .slider .images ul li"),
+  sliderShowImg = document.querySelector(".slider .show-img-holder img"),
+  cartIcon = document.querySelector(".container header .user-options i"),
+  cartsMenu = document.querySelector(".container header .carts-menu"),
+  increaseProduct = document.querySelector(".counter button:first-child"),
+  decreaseProduct = document.querySelector(".counter button:last-child"),
+  numberOfProducts = document.querySelector(".counter .the-number"),
+  showNumOfProd = document.querySelector(".user-options i .number-of-products"),
+  addToCart = document.getElementById("add-to-cart-button"),
+  titleProduct = document.querySelector("main .request-products h2"),
+  priceProduct = document.querySelector(".price-container .price"),
+  cartsPlace = document.querySelector(" header .carts-menu .carts");
 
-// Add active class on img
+
+
+
+
 let currentImg = 0;
 let currentImgLocal = localStorage.getItem("currentImg");
 if (currentImgLocal !== null) {
   currentImg = parseInt(currentImgLocal);
+  // add active class on current img
   sliderImages.forEach((img) => {
     if (img.classList.contains("active")) {
       img.classList.remove("active");
@@ -33,23 +35,33 @@ if (currentImgLocal !== null) {
   );
 }
 
+
+
+
+
 sliderImages.forEach((img, i) => {
   img.addEventListener("click", () => {
+    // remove all active classes
     sliderImages.forEach((img) => {
       if (img.classList.contains("active")) img.classList.remove("active");
     });
 
+    // add active class on clicked img
     img.classList.add("active");
     currentImg = i;
     localStorage.setItem("currentImg", currentImg);
 
+    // change main source url image to the clicked img
     sliderShowImg.src = img.children[0].src.replace("-thumbnail", "");
-
+    // store clicked img src in variable
     thumbnailImg = img.children[0].src;
   });
 });
 
-// switch cart menu
+
+
+
+
 let hasCheckOutButton = false;
 localStorage.setItem("hasCheckOutButton", hasCheckOutButton);
 let checkOutButton = document.createElement("a");
@@ -59,12 +71,17 @@ checkOutButton.classList.add("checkout-button");
 let anchorProducts = document.createElement("a");
 checkOutButton.href = "products.html";
 
+
+
+
+
 cartIcon.addEventListener("click", () => {
+  // open & close carts menu
   cartsMenu.classList.contains("open")
     ? cartsMenu.classList.toggle("open")
     : cartsMenu.classList.toggle("open");
 
-  // Add check out button inside cart menu
+  // Add [check out] button inside cart menu
   Array.from(cartsPlace.children).forEach((ele) => {
     if (ele.classList.contains("product") && !hasCheckOutButton) {
       cartsMenu.appendChild(checkOutButton);
@@ -74,14 +91,18 @@ cartIcon.addEventListener("click", () => {
   });
 });
 
-// increase one to the number of products
+
+
+
+
+// add 1 to the number of products
 increaseProduct.addEventListener("click", () => {
   let productsNumber = parseInt(numberOfProducts.textContent);
   productsNumber++;
   numberOfProducts.textContent = productsNumber;
 });
 
-// decrease one to the number of products
+// minus 1 from the number of products
 decreaseProduct.addEventListener("click", () => {
   let productsNumber = parseInt(numberOfProducts.textContent);
   if (productsNumber > 0) {
@@ -90,27 +111,32 @@ decreaseProduct.addEventListener("click", () => {
   }
 });
 
+
+
+
+
 let thumbnailImg = sliderImages[0].children[0].src;
 let carts = [];
 let productsLocal = localStorage.getItem("products");
+// update list of products from data in local storage
 if (productsLocal !== null) {
   carts = JSON.parse(productsLocal);
   updateList();
 }
 
+
+
+
+
 addToCart.addEventListener("click", () => {
-  if (
-    cartsPlace.children.length === 1 &&
-    cartsPlace.children[0].classList.contains("empty")
-  ) {
+  if (cartsPlace.children.length === 1 && cartsPlace.children[0].classList.contains("empty"))
     cartsPlace.children[0].remove();
-    console.log(cartsPlace.children);
-  }
 
   addCartToArr();
   updateList();
   clickedEffect(addToCart);
 
+  // add checkout button to cart menu depending on number of products
   [...cartsPlace.children].forEach((ele) => {
     if (ele.classList.contains("product") && !hasCheckOutButton) {
       cartsMenu.appendChild(checkOutButton);
@@ -119,6 +145,10 @@ addToCart.addEventListener("click", () => {
     }
   });
 });
+
+
+
+
 
 function clickedEffect(ele) {
   ele.style.transition = "0.1s";
@@ -130,6 +160,10 @@ function clickedEffect(ele) {
   }, 100);
 }
 
+
+
+
+
 function addCartToArr() {
   if (numberOfProducts.textContent !== "0") {
     let cart = {
@@ -139,12 +173,17 @@ function addCartToArr() {
       title: titleProduct.textContent,
       price: priceProduct.textContent.slice(1),
     };
+    // Add [object] of product to carts [array]
     carts.push(cart);
     localStorage.setItem("products", JSON.stringify(carts));
     addCart(cart);
   }
 }
 
+
+
+
+// Create product content
 function addCart(cart) {
   let total = ` $${cart.price * cart.numberOfProducts}.00`;
 
@@ -185,6 +224,7 @@ function addCart(cart) {
   // id
   productContainer.setAttribute("data-id", cart.id);
 
+  // delete message if carts menu is empty
   Array.from(cartsPlace.children).forEach((ele) => {
     if (ele.classList.contains("empty")) ele.remove();
   });
@@ -194,35 +234,30 @@ function addCart(cart) {
 
 function deleteProductFun(cartId, button) {
   button.addEventListener("click", () => {
-    // delete product from list who clicked on delete icon
+    // delete clicked product from list [on delete icon]
     carts = carts.filter((cart) => cart.id !== cartId);
     localStorage.setItem("products", JSON.stringify(carts));
 
+    // if there is no products in carts menu [delete check out button]
     if (cartsPlace.children.length === 1 && hasCheckOutButton) {
       checkOutButton.remove();
       hasCheckOutButton = false;
       localStorage.setItem("hasCheckOutButton", hasCheckOutButton);
     }
+    // update list of products after delete one of them
     updateList();
   });
 }
 
-function showNumbOfProdFun() {
-  Array.from(cartsPlace.children).forEach((ele) => {
-    if (ele.classList.contains("product")) {
-      showNumOfProd.style.display = "block";
-      showNumOfProd.textContent = cartsPlace.children.length;
-    } else {
-      showNumOfProd.style.display = "none";
-      showNumOfProd.textContent = cartsPlace.children.length;
-    }
-  });
-}
+
+
+
 
 function updateList() {
+  // empty carts menu
   cartsPlace.textContent = "";
+  // create message if there were no products
   if (carts.length === 0) {
-    // create message if there were no products
     let span = document.createElement("span");
     span.textContent = "Your cart is empty.";
     span.className = "empty";
@@ -235,27 +270,49 @@ function updateList() {
     cartsPlace.style.height = "";
   }
 
+  // Add products to the carts menu
   carts.forEach((cart) => {
     addCart(cart);
   });
   showNumbOfProdFun();
 }
 
+
+
+
+
+// show number on icon carts menu
+function showNumbOfProdFun() {
+  Array.from(cartsPlace.children).forEach((ele) => {
+    if (ele.classList.contains("product")) {
+      showNumOfProd.style.display = "block";
+      showNumOfProd.textContent = cartsPlace.children.length;
+    } else {
+      showNumOfProd.style.display = "none";
+      showNumOfProd.textContent = cartsPlace.children.length;
+    }
+  });
+}
 showNumbOfProdFun();
 
-// Slider overlay
-const showImg = document.querySelector("main .slider .show-img-holder");
-const sliderOverlay = document.querySelector(".slider-overlay");
-const sliderOverlayImages = document.querySelectorAll(
-  ".slider-overlay .images .img img"
-);
-const sliderOverlayMainImg = document.querySelector(
-  ".slider-overlay .show-frame .img img"
-);
-const sliderOverlayOut = document.querySelector(".slider-overlay i");
-const sliderNext = document.querySelector(".slider-overlay .show-frame .next");
-const sliderPrev = document.querySelector(".slider-overlay .show-frame .prev");
 
+
+
+
+// slider overlay logic
+const showImg = document.querySelector("main .slider .show-img-holder"),
+  sliderOverlay = document.querySelector(".slider-overlay"),
+  sliderOverlayImages = document.querySelectorAll(".slider-overlay .images .img img"),
+  sliderOverlayMainImg = document.querySelector(".slider-overlay .show-frame .img img"),
+  sliderOverlayOut = document.querySelector(".slider-overlay i"),
+  sliderNext = document.querySelector(".slider-overlay .show-frame .next"),
+  sliderPrev = document.querySelector(".slider-overlay .show-frame .prev");
+
+
+
+
+
+// click on showed img from the previous slider
 showImg.addEventListener("click", () => {
   checkSliderImages();
   sliderOverlay.style.display = "flex";
@@ -283,30 +340,42 @@ showImg.addEventListener("click", () => {
   });
 });
 
+
+
+
+
 window.addEventListener("click", (e) => {
-  // Close overlay on click on the overlay itself
+  // close overlay depending on the click on the overlay itself
   if (e.target.className === "slider-overlay") {
     sliderOverlay.style.display = "none";
     setOverlayImgToSliderImg();
   }
 
-  // Close mobile overlay
+  // close mobile overlay
   if (e.target.classList.contains("close-mobile-nav")) {
     overlay.style.display = "none";
     mobileNav.classList.remove("active");
   }
 });
-// Close overlay when click on "X" sign
+
+
+
+
+
+// close overlay slider when click on "X" sign
 sliderOverlayOut.addEventListener("click", () => {
   sliderOverlay.style.display = "none";
   setOverlayImgToSliderImg();
 });
 
+
+
+
+
 function setOverlayImgToSliderImg() {
   sliderImages.forEach((img) => {
-    sliderImages.forEach((img) => {
-      if (img.classList.contains("active")) img.classList.remove("active");
-    });
+    if (img.classList.contains("active"))
+      img.classList.remove("active");
   });
 
   for (let i = 0; i < sliderImages.length; i++) {
@@ -322,8 +391,11 @@ function setOverlayImgToSliderImg() {
   }
 }
 
-let lengthSliderImages = sliderOverlayImages.length - 1;
 
+
+
+
+let lengthSliderImages = sliderOverlayImages.length - 1;
 sliderNext.addEventListener("click", () => {
   if (currentImg !== lengthSliderImages) {
     currentImg++;
@@ -340,8 +412,12 @@ sliderPrev.addEventListener("click", () => {
   checkSliderImages();
 });
 
+
+
+
+
 function checkSliderImages() {
-  // Remove active class from all images
+  // remove active classes from all images
   sliderOverlayImages.forEach((img) => {
     if (img.parentElement.classList.contains("active"))
       img.parentElement.classList.remove("active");
@@ -351,12 +427,14 @@ function checkSliderImages() {
   sliderOverlayImages[currentImg].parentElement.classList.add("active");
 
   // set current img on show frame img
-  let sourceImg = sliderImages[currentImg].children[0].src.replace(
-    "-thumbnail",
-    ""
-  );
+  let sourceImg = sliderImages[currentImg].children[0].src.replace
+  ("-thumbnail", "");
   sliderOverlayMainImg.src = sourceImg;
 }
+
+
+
+
 
 let isLastImg = false;
 let isFirstImg = false;
@@ -365,7 +443,11 @@ window.addEventListener("click", (e) => {
   isFirstImgChecker(e);
 });
 
+
+
+
 function isLastImgChecker(e) {
+  // check if the current img is last one in the slider
   function check() {
     if (isLastImg) {
       currentImg = 0;
@@ -375,17 +457,16 @@ function isLastImgChecker(e) {
     }
   }
 
-  if (e.target.classList.contains("next")) {
-    check();
-  } else {
-    // or if its i tag
-    if (e.target.tagName === "I") {
-      check();
-    }
-  }
+  if (e.target.classList.contains("next")) check();
+  else if (e.target.tagName === "I") check();
 }
 
+
+
+
+
 function isFirstImgChecker(e) {
+  // check if the current img is first one in the slider
   function check() {
     if (isFirstImg) {
       currentImg = lengthSliderImages;
@@ -395,31 +476,37 @@ function isFirstImgChecker(e) {
     }
   }
 
-  if (e.target.classList.contains("prev")) {
-    check();
-  } else {
-    // or if its i tag
-    if (e.target.tagName === "I") {
-      check();
-    }
-  }
+  if (e.target.classList.contains("prev")) check();
+  else if (e.target.tagName === "I") check();
 }
 
 checkOutButton.addEventListener("click", () => {
   clickedEffect(checkOutButton);
 });
 
-// Mobile nav
 
-const navMenu = document.querySelector("header .links-section .mobile-menu");
-const mobileNav = document.querySelector(".links-section .mobile-menu nav");
-const overlay = document.createElement("div");
-const closeMobileNav = document.createElement("i");
 
+
+
+// mobile nav
+const navMenu = document.querySelector("header .links-section .mobile-menu"),
+  mobileNav = document.querySelector(".links-section .mobile-menu nav"),
+  overlay = document.createElement("div"),
+  closeMobileNav = document.createElement("i");
+
+
+
+
+
+// overlay settings
 overlay.className = "overlay";
 document.body.appendChild(overlay);
 closeMobileNav.className = "bi bi-x close-mobile-nav";
 closeMobileNav.style.width = "fit-content";
+
+
+
+
 
 navMenu.addEventListener("click", () => {
   overlay.style.display = "block";
