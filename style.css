@@ -470,7 +470,7 @@ main {
 
 @media (max-width: 450px) {
   main {
-    padding: 0;
+    padding: 0 10px;
     margin-top: 0;
   }
 }
@@ -519,6 +519,7 @@ main .slider .show-img-holder img {
   -moz-border-radius: 10px;
   -ms-border-radius: 10px;
   -o-border-radius: 10px;
+  object-fit: cover;
 }
 
 @media (max-width: 450px) {
@@ -528,6 +529,7 @@ main .slider .show-img-holder img {
     -moz-border-radius: 0;
     -ms-border-radius: 0;
     -o-border-radius: 0;
+    height: 100%;
   }
 }
 
