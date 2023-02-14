@@ -585,7 +585,7 @@ checkOutButton.addEventListener("click", () => {
 
 // mobile nav
 const navMenu = document.querySelector("header .links-section .mobile-menu"),
-  mobileNav = document.querySelector(".links-section .mobile-menu nav"),
+  mobileNav = document.querySelector(".links-section .mobile-menu-container nav"),
   overlay = document.createElement("div"),
   closeMobileNav = document.createElement("i");
 
