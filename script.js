@@ -11,13 +11,13 @@ const sliderImages = document.querySelectorAll("main .slider .images ul li"),
   addToCart = document.getElementById("add-to-cart-button"),
   titleProduct = document.querySelector("main .request-products h2"),
   priceProduct = document.querySelector(".price-container .price"),
-  oldPrice = document.querySelector(".request-products .price-container .old-price"),
+  oldPrice = document.querySelector(
+    ".request-products .price-container .old-price"
+  ),
   cartsPlace = document.querySelector(" header .carts-menu .carts"),
-  discount = document.querySelector(".request-products .price-container .discount");
-
-
-
-
+  discount = document.querySelector(
+    ".request-products .price-container .discount"
+  );
 
 let currentImg = 0,
   currentImgLocal = localStorage.getItem("currentImg"),
@@ -43,10 +43,6 @@ if (currentImgLocal !== null) {
   discount.textContent = discountLocal;
 }
 
-
-
-
-
 sliderImages.forEach((img, i) => {
   img.addEventListener("click", () => {
     // remove all active classes
@@ -68,10 +64,6 @@ sliderImages.forEach((img, i) => {
     changeProductInfo(i);
   });
 });
-
-
-
-
 
 function changeProductInfo(i) {
   if (i === 0) {
@@ -97,10 +89,6 @@ function changeProductInfo(i) {
   localStorage.setItem("discount", discount.textContent);
 }
 
-
-
-
-
 let hasCheckOutButton = false;
 localStorage.setItem("hasCheckOutButton", hasCheckOutButton);
 
@@ -110,10 +98,6 @@ checkOutButton.textContent = "Checkout";
 checkOutButton.classList.add("checkout-button");
 let anchorProducts = document.createElement("a");
 checkOutButton.href = "products.html";
-
-
-
-
 
 cartIcon.addEventListener("click", () => {
   // open & close carts menu
@@ -131,10 +115,6 @@ cartIcon.addEventListener("click", () => {
   });
 });
 
-
-
-
-
 // add 1 to the number of products
 increaseProduct.addEventListener("click", () => {
   let productsNumber = parseInt(numberOfProducts.textContent);
@@ -151,10 +131,6 @@ decreaseProduct.addEventListener("click", () => {
   }
 });
 
-
-
-
-
 let thumbnailImg = sliderImages[0].children[0].src;
 let thumbnailImgLocal = localStorage.getItem("thumbnailImg");
 if (thumbnailImgLocal !== null) thumbnailImg = thumbnailImgLocal;
@@ -166,10 +142,6 @@ if (productsLocal !== null) {
   carts = JSON.parse(productsLocal);
   updateList();
 }
-
-
-
-
 
 addToCart.addEventListener("click", () => {
   if (
@@ -192,10 +164,6 @@ addToCart.addEventListener("click", () => {
   });
 });
 
-
-
-
-
 function clickedEffect(ele) {
   ele.style.transition = "0.1s";
   ele.classList.add("clicked");
@@ -205,10 +173,6 @@ function clickedEffect(ele) {
     ele.style.transition = "";
   }, 100);
 }
-
-
-
-
 
 function addCartToArr() {
   let isNewProduct = false;
@@ -245,7 +209,6 @@ function addCartToArr() {
         )
         .slice(imgProductArr.indexOf(/\d/gi));
 
-
       // Check if product is not exist in the cart
       if (numberOfImgArr !== numberOfImg) isNewProduct = true;
       else {
@@ -267,10 +230,6 @@ function addCartToArr() {
     }
   }
 }
-
-
-
-
 
 // Create product content
 function addCart(cart) {
@@ -321,10 +280,6 @@ function addCart(cart) {
   deleteProductFun(cart.id, deleteProduct);
 }
 
-
-
-
-
 function deleteProductFun(cartId, button) {
   button.addEventListener("click", () => {
     // delete clicked product from list [on delete icon]
@@ -341,10 +296,6 @@ function deleteProductFun(cartId, button) {
     updateList();
   });
 }
-
-
-
-
 
 function updateList() {
   // empty carts menu
@@ -370,10 +321,6 @@ function updateList() {
   showNumbOfProdFun();
 }
 
-
-
-
-
 // show number on icon carts menu
 function showNumbOfProdFun() {
   Array.from(cartsPlace.children).forEach((ele) => {
@@ -388,22 +335,18 @@ function showNumbOfProdFun() {
 }
 showNumbOfProdFun();
 
-
-
-
-
 // slider overlay logic
 const showImg = document.querySelector("main .slider .show-img-holder"),
   sliderOverlay = document.querySelector(".slider-overlay"),
-  sliderOverlayImages = document.querySelectorAll(".slider-overlay .images .img img"),
-  sliderOverlayMainImg = document.querySelector(".slider-overlay .show-frame .img img"),
+  sliderOverlayImages = document.querySelectorAll(
+    ".slider-overlay .images .img img"
+  ),
+  sliderOverlayMainImg = document.querySelector(
+    ".slider-overlay .show-frame .img img"
+  ),
   sliderOverlayOut = document.querySelector(".slider-overlay i"),
   sliderNext = document.querySelector(".slider-overlay .show-frame .next"),
   sliderPrev = document.querySelector(".slider-overlay .show-frame .prev");
-
-
-
-
 
 // click on showed img from the previous slider
 showImg.addEventListener("click", () => {
@@ -429,13 +372,10 @@ showImg.addEventListener("click", () => {
       sliderOverlayMainImg.src = img.src;
       currentImg = i;
       localStorage.setItem("currentImg", currentImg);
+      changeProductInfo(i);
     });
   });
 });
-
-
-
-
 
 window.addEventListener("click", (e) => {
   // close overlay depending on the click on the overlay itself
@@ -450,10 +390,6 @@ window.addEventListener("click", (e) => {
     mobileNav.classList.remove("active");
   }
 });
-
-
-
-
 
 // close overlay slider when click on "X" sign
 sliderOverlayOut.addEventListener("click", () => {
@@ -479,10 +415,6 @@ function setOverlayImgToSliderImg() {
   }
 }
 
-
-
-
-
 let lengthSliderImages = sliderOverlayImages.length - 1;
 sliderNext.addEventListener("click", () => {
   if (currentImg !== lengthSliderImages) {
@@ -492,10 +424,6 @@ sliderNext.addEventListener("click", () => {
   checkSliderImages();
 });
 
-
-
-
-
 sliderPrev.addEventListener("click", () => {
   if (currentImg !== 0) {
     currentImg--;
@@ -503,10 +431,6 @@ sliderPrev.addEventListener("click", () => {
   } else isFirstImg = true;
   checkSliderImages();
 });
-
-
-
-
 
 function checkSliderImages() {
   // remove active classes from all images
@@ -526,20 +450,12 @@ function checkSliderImages() {
   sliderOverlayMainImg.src = sourceImg;
 }
 
-
-
-
-
 let isLastImg = false;
 let isFirstImg = false;
 window.addEventListener("click", (e) => {
   isLastImgChecker(e);
   isFirstImgChecker(e);
 });
-
-
-
-
 
 function isLastImgChecker(e) {
   // check if the current img is last one in the slider
@@ -556,10 +472,6 @@ function isLastImgChecker(e) {
   else if (e.target.tagName === "I") check();
 }
 
-
-
-
-
 function isFirstImgChecker(e) {
   // check if the current img is first one in the slider
   function check() {
@@ -575,17 +487,15 @@ function isFirstImgChecker(e) {
   else if (e.target.tagName === "I") check();
 }
 
-
-
-
-
 checkOutButton.addEventListener("click", () => {
   clickedEffect(checkOutButton);
 });
 
 // mobile nav
 const navMenu = document.querySelector("header .links-section .mobile-menu"),
-  mobileNav = document.querySelector(".links-section .mobile-menu-container nav"),
+  mobileNav = document.querySelector(
+    ".links-section .mobile-menu-container nav"
+  ),
   overlay = document.createElement("div"),
   closeMobileNav = document.createElement("i");
 
