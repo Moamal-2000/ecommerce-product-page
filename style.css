@@ -890,7 +890,7 @@ main .request-products .add-to-cart-content .add-to-cart i {
 @media (max-width: 500px) {
   .slider-overlay {
     justify-content: flex-start;
-    padding-top: 10px;
+    padding-top: 40px;
   }
 }
 
@@ -906,6 +906,7 @@ main .request-products .add-to-cart-content .add-to-cart i {
 @media (max-width: 490px) {
   .slider-overlay i {
     margin-left: 80%;
+    margin-bottom: 20px;
   }
 }
 
