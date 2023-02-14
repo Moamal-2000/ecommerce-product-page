@@ -14,10 +14,6 @@ let carts = [];
 let productsLocal = localStorage.getItem("products");
 if (productsLocal !== null) {
   carts = JSON.parse(productsLocal);
-
-  carts.forEach((cart) => {
-    cart.thumbnailImg = cart.thumbnailImg.replace("-thumbnail", "");
-  });
   updateList();
 }
 
@@ -111,7 +107,7 @@ function addCart(cart) {
 
 function deleteProductFun(cartId, button) {
   button.addEventListener("click", () => {
-    // delete product from list who clicked on delete icon
+    // delete product from list who already clicked on delete button
     carts = carts.filter((cart) => cart.id !== cartId);
     localStorage.setItem("products", JSON.stringify(carts));
     updateList();

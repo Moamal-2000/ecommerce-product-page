@@ -11,21 +11,25 @@ const sliderImages = document.querySelectorAll("main .slider .images ul li"),
   addToCart = document.getElementById("add-to-cart-button"),
   titleProduct = document.querySelector("main .request-products h2"),
   priceProduct = document.querySelector(".price-container .price"),
-  cartsPlace = document.querySelector(" header .carts-menu .carts");
+  oldPrice = document.querySelector(".request-products .price-container .old-price"),
+  cartsPlace = document.querySelector(" header .carts-menu .carts"),
+  discount = document.querySelector(".request-products .price-container .discount");
 
 
 
 
 
-let currentImg = 0;
-let currentImgLocal = localStorage.getItem("currentImg");
+let currentImg = 0,
+  currentImgLocal = localStorage.getItem("currentImg"),
+  priceLocal = localStorage.getItem("price"),
+  oldPriceLocal = localStorage.getItem("old-price"),
+  discountLocal = localStorage.getItem("discount");
+
 if (currentImgLocal !== null) {
   currentImg = parseInt(currentImgLocal);
   // add active class on current img
   sliderImages.forEach((img) => {
-    if (img.classList.contains("active")) {
-      img.classList.remove("active");
-    }
+    if (img.classList.contains("active")) img.classList.remove("active");
   });
 
   sliderImages[currentImg].classList.add("active");
@@ -33,6 +37,10 @@ if (currentImgLocal !== null) {
     "-thumbnail",
     ""
   );
+
+  priceProduct.textContent = priceLocal;
+  oldPrice.textContent = oldPriceLocal;
+  discount.textContent = discountLocal;
 }
 
 
@@ -55,6 +63,9 @@ sliderImages.forEach((img, i) => {
     sliderShowImg.src = img.children[0].src.replace("-thumbnail", "");
     // store clicked img src in variable
     thumbnailImg = img.children[0].src;
+    localStorage.setItem("thumbnailImg", thumbnailImg);
+
+    changeProductInfo(i);
   });
 });
 
@@ -62,8 +73,37 @@ sliderImages.forEach((img, i) => {
 
 
 
+function changeProductInfo(i) {
+  if (i === 0) {
+    priceProduct.textContent = "$125.00";
+    oldPrice.textContent = "$250.00";
+    discount.textContent = "50%";
+  } else if (i === 1) {
+    priceProduct.textContent = "$115.00";
+    oldPrice.textContent = "$150.00";
+    discount.textContent = "30%";
+  } else if (i === 2) {
+    priceProduct.textContent = "$180.00";
+    oldPrice.textContent = "$300.00";
+    discount.textContent = "40%";
+  } else if (i === 3) {
+    priceProduct.textContent = "$120.00";
+    oldPrice.textContent = "$220.00";
+    discount.textContent = "45%";
+  }
+
+  localStorage.setItem("price", priceProduct.textContent);
+  localStorage.setItem("old-price", oldPrice.textContent);
+  localStorage.setItem("discount", discount.textContent);
+}
+
+
+
+
+
 let hasCheckOutButton = false;
 localStorage.setItem("hasCheckOutButton", hasCheckOutButton);
+
 let checkOutButton = document.createElement("a");
 checkOutButton.type = "button";
 checkOutButton.textContent = "Checkout";
@@ -116,6 +156,9 @@ decreaseProduct.addEventListener("click", () => {
 
 
 let thumbnailImg = sliderImages[0].children[0].src;
+let thumbnailImgLocal = localStorage.getItem("thumbnailImg");
+if (thumbnailImgLocal !== null) thumbnailImg = thumbnailImgLocal;
+
 let carts = [];
 let productsLocal = localStorage.getItem("products");
 // update list of products from data in local storage
@@ -129,7 +172,10 @@ if (productsLocal !== null) {
 
 
 addToCart.addEventListener("click", () => {
-  if (cartsPlace.children.length === 1 && cartsPlace.children[0].classList.contains("empty"))
+  if (
+    cartsPlace.children.length === 1 &&
+    cartsPlace.children[0].classList.contains("empty")
+  )
     cartsPlace.children[0].remove();
 
   addCartToArr();
@@ -165,6 +211,7 @@ function clickedEffect(ele) {
 
 
 function addCartToArr() {
+  let isNewProduct = false;
   if (numberOfProducts.textContent !== "0") {
     let cart = {
       id: Date.now(),
@@ -173,12 +220,54 @@ function addCartToArr() {
       title: titleProduct.textContent,
       price: priceProduct.textContent.slice(1),
     };
-    // Add [object] of product to carts [array]
-    carts.push(cart);
-    localStorage.setItem("products", JSON.stringify(carts));
-    addCart(cart);
+
+    // Add first project and end function
+    if (carts.length === 0) {
+      carts.push(cart);
+      localStorage.setItem("products", JSON.stringify(carts));
+      addCart(cart);
+      return;
+    }
+
+    // Current product number
+    let imgProduct = cart.thumbnailImg;
+    let numberOfImg = imgProduct
+      .slice(imgProduct.indexOf("product-"), imgProduct.indexOf("-thumbnail"))
+      .slice(imgProduct.indexOf(/\d/gi));
+
+    for (let i = 0; i < carts.length; i++) {
+      // All products numbers
+      let imgProductArr = carts[i].thumbnailImg;
+      let numberOfImgArr = imgProductArr
+        .slice(
+          imgProductArr.indexOf("product-"),
+          imgProductArr.indexOf("-thumbnail")
+        )
+        .slice(imgProductArr.indexOf(/\d/gi));
+
+
+      // Check if product is not exist in the cart
+      if (numberOfImgArr !== numberOfImg) isNewProduct = true;
+      else {
+        isNewProduct = false;
+        // Add new price on the current price
+        carts[i].numberOfProducts =
+          parseInt(carts[i].numberOfProducts) +
+          parseInt(numberOfProducts.textContent);
+        localStorage.setItem("products", JSON.stringify(carts));
+        break;
+      }
+    }
+
+    // Add product to cart if its not exist in the cart
+    if (isNewProduct) {
+      carts.push(cart);
+      localStorage.setItem("products", JSON.stringify(carts));
+      addCart(cart);
+    }
   }
 }
+
 
 
 
@@ -231,6 +320,10 @@ function addCart(cart) {
 
   deleteProductFun(cart.id, deleteProduct);
 }
+
+
+
+
 
 function deleteProductFun(cartId, button) {
   button.addEventListener("click", () => {
@@ -368,14 +461,9 @@ sliderOverlayOut.addEventListener("click", () => {
   setOverlayImgToSliderImg();
 });
 
-
-
-
-
 function setOverlayImgToSliderImg() {
   sliderImages.forEach((img) => {
-    if (img.classList.contains("active"))
-      img.classList.remove("active");
+    if (img.classList.contains("active")) img.classList.remove("active");
   });
 
   for (let i = 0; i < sliderImages.length; i++) {
@@ -404,6 +492,10 @@ sliderNext.addEventListener("click", () => {
   checkSliderImages();
 });
 
+
+
+
+
 sliderPrev.addEventListener("click", () => {
   if (currentImg !== 0) {
     currentImg--;
@@ -427,8 +519,10 @@ function checkSliderImages() {
   sliderOverlayImages[currentImg].parentElement.classList.add("active");
 
   // set current img on show frame img
-  let sourceImg = sliderImages[currentImg].children[0].src.replace
-  ("-thumbnail", "");
+  let sourceImg = sliderImages[currentImg].children[0].src.replace(
+    "-thumbnail",
+    ""
+  );
   sliderOverlayMainImg.src = sourceImg;
 }
 
@@ -442,6 +536,7 @@ window.addEventListener("click", (e) => {
   isLastImgChecker(e);
   isFirstImgChecker(e);
 });
+
 
 
 
@@ -480,13 +575,13 @@ function isFirstImgChecker(e) {
   else if (e.target.tagName === "I") check();
 }
 
+
+
+
+
 checkOutButton.addEventListener("click", () => {
   clickedEffect(checkOutButton);
 });
-
-
-
-
 
 // mobile nav
 const navMenu = document.querySelector("header .links-section .mobile-menu"),
@@ -494,19 +589,11 @@ const navMenu = document.querySelector("header .links-section .mobile-menu"),
   overlay = document.createElement("div"),
   closeMobileNav = document.createElement("i");
 
-
-
-
-
 // overlay settings
 overlay.className = "overlay";
 document.body.appendChild(overlay);
 closeMobileNav.className = "bi bi-x close-mobile-nav";
 closeMobileNav.style.width = "fit-content";
-
-
-
-
 
 navMenu.addEventListener("click", () => {
   overlay.style.display = "block";
