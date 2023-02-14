@@ -509,9 +509,11 @@ navMenu.addEventListener("click", () => {
   overlay.style.display = "block";
   mobileNav.prepend(closeMobileNav);
   mobileNav.classList.add("active");
+  document.body.style.overflow = 'hidden'
 });
 
 overlay.addEventListener("click", (e) => {
   e.target.style.display = "none";
   mobileNav.classList.remove("active");
+  document.body.style.overflow = ''
 });
