@@ -615,6 +615,22 @@ main .slider .images ul li.active {
   -o-border-radius: 10px;
 }
 
+main .slider .images ul li:first-child.active {
+  outline-color: var(--orange);
+}
+
+main .slider .images ul li:nth-child(2).active {
+  outline-color: #ff1414;
+}
+
+main .slider .images ul li:nth-child(3).active {
+  outline-color: #107cff;
+}
+
+main .slider .images ul li:nth-child(4).active {
+  outline-color: var(--orange);
+}
+
 main .slider .images ul li img {
   height: 100%;
   width: 100%;
@@ -1058,8 +1074,24 @@ main .request-products .add-to-cart-content .add-to-cart i {
 }
 
 .slider-overlay .images .img.active {
-  outline: solid 3px var(--orange);
+  outline: solid 3px;
   background-color: rgba(255, 255, 255, 0.644);
+}
+
+.slider-overlay .images .img:first-child.active {
+  outline-color: var(--orange);
+}
+
+.slider-overlay .images .img:nth-child(2).active {
+  outline-color: #ff1414;
+}
+
+.slider-overlay .images .img:nth-child(3).active {
+  outline-color: #107cff;
+}
+
+.slider-overlay .images .img:nth-child(4).active {
+  outline-color: var(--orange);
 }
 
 .slider-overlay .images .img img {

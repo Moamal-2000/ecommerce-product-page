@@ -379,7 +379,8 @@ showImg.addEventListener("click", () => {
 
 window.addEventListener("click", (e) => {
   // close overlay depending on the click on the overlay itself
-  if (e.target.className === "slider-overlay" || e.target.tagName !== "IMG") {
+  if (e.target.tagName !== "IMG" && e.target.tagName !== "BUTTON" && e.target.tagName !== "I") {
+    console.log(true);
     sliderOverlay.style.display = "none";
     setOverlayImgToSliderImg();
   }
