@@ -61,32 +61,48 @@ sliderImages.forEach((img, i) => {
     thumbnailImg = img.children[0].src;
     localStorage.setItem("thumbnailImg", thumbnailImg);
 
-    changeProductInfo(i);
+    getSelectedProduct(i);
   });
 });
 
-function changeProductInfo(i) {
-  if (i === 0) {
-    priceProduct.textContent = "$125.00";
-    oldPrice.textContent = "$250.00";
-    discount.textContent = "50%";
-  } else if (i === 1) {
-    priceProduct.textContent = "$115.00";
-    oldPrice.textContent = "$150.00";
-    discount.textContent = "30%";
-  } else if (i === 2) {
-    priceProduct.textContent = "$180.00";
-    oldPrice.textContent = "$300.00";
-    discount.textContent = "40%";
-  } else if (i === 3) {
-    priceProduct.textContent = "$120.00";
-    oldPrice.textContent = "$220.00";
-    discount.textContent = "45%";
-  }
+const products = [
+  {
+    price: "$125.00",
+    oldPrice: "$250.00",
+    discount: "50%",
+  },
+  {
+    price: "$115.00",
+    oldPrice: "$150.00",
+    discount: "30%",
+  },
+  {
+    price: "$180.00",
+    oldPrice: "$300.00",
+    discount: "40%",
+  },
+  {
+    price: "$120.00",
+    oldPrice: "$220.00",
+    discount: "45%",
+  },
+];
 
-  localStorage.setItem("price", priceProduct.textContent);
-  localStorage.setItem("old-price", oldPrice.textContent);
-  localStorage.setItem("discount", discount.textContent);
+function setProductInfo(product) {
+  priceProduct.textContent = product.price;
+  oldPrice.textContent = product.oldPrice;
+  discount.textContent = product.discount;
+
+  localStorage.setItem("price", product.price);
+  localStorage.setItem("old-price", product.oldPrice);
+  localStorage.setItem("discount", product.discount);
+}
+
+function getSelectedProduct(i) {
+  if (i >= 0 && i < products.length) {
+    const product = products[i];
+    setProductInfo(product);
+  }
 }
 
 let hasCheckOutButton = false;
@@ -372,15 +388,18 @@ showImg.addEventListener("click", () => {
       sliderOverlayMainImg.src = img.src;
       currentImg = i;
       localStorage.setItem("currentImg", currentImg);
-      changeProductInfo(i);
+      getSelectedProduct(i);
     });
   });
 });
 
 window.addEventListener("click", (e) => {
   // close overlay depending on the click on the overlay itself
-  if (e.target.tagName !== "IMG" && e.target.tagName !== "BUTTON" && e.target.tagName !== "I") {
-    console.log(true);
+  if (
+    e.target.tagName !== "IMG" &&
+    e.target.tagName !== "BUTTON" &&
+    e.target.tagName !== "I"
+  ) {
     sliderOverlay.style.display = "none";
     setOverlayImgToSliderImg();
   }
@@ -510,11 +529,11 @@ navMenu.addEventListener("click", () => {
   overlay.style.display = "block";
   mobileNav.prepend(closeMobileNav);
   mobileNav.classList.add("active");
-  document.body.style.overflow = 'hidden'
+  document.body.style.overflow = "hidden";
 });
 
 overlay.addEventListener("click", (e) => {
   e.target.style.display = "none";
   mobileNav.classList.remove("active");
-  document.body.style.overflow = ''
+  document.body.style.overflow = "";
 });
